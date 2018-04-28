@@ -13,20 +13,38 @@ import getWeatherImage from './utils/getWeatherImage';
 import SearchInput from './components/SearchInput';
 
 export default class App extends React.Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      location: 'College Park',
+    };
+  }
+
+  handleUpdateLocation = (city) => {
+    this.setState({
+      location: city,
+    });
+  };
+
   render() {
+    const {location} = this.state;
+
     return (
       <KeyboardAvoidingView style={styles.container} behavior='padding'>
         <ImageBackground
-          source="./assets/cloudy.png"
+          source={require('./assets/weather-images/cloudy.png')}
           style={styles.imageContainer}
           imageStyle={styles.image}
         >
           <View style={styles.contentContainer}>
-            <Text style={[styles.h1, styles.textStyles]}>College Park</Text>
+            <Text style={[styles.h1, styles.textStyle]}>{location}</Text>
             <Text style={[styles.h2, styles.textStyle]}>Cloudy</Text>
             <Text style={[styles.h1, styles.textStyle]}>24°</Text>
 
-            <SearchInput placeholder="Search for a city" />
+            <SearchInput 
+              placeholder="Search for a city..." 
+              onSubmit={this.handleUpdateLocation}
+            />
           </View>
         </ImageBackground>
       </KeyboardAvoidingView>
@@ -37,7 +55,6 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#34495e',
   },
   imageContainer: {
     flex: 1,
@@ -56,6 +73,7 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     textAlign: 'center',
+    color: 'white',
     ...Platform.select({
       ios: {
         fontFamily: 'AvenirNext-Regular',
